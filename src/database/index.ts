@@ -9,6 +9,7 @@ const DB = process?.env?.DATABASE_STRING?.replace(
 );
 const db = async () => {
   if (!DB) return console.log("No DB string");
+  if (mongoose.connections[0].readyState) return;
   try {
     await mongoose
       .connect(DB)

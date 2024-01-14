@@ -4,6 +4,7 @@ import "./globals.css";
 import GlobalContextProvider from "@/context";
 import AuthProvider from "@/auth-provider";
 import { getServerSession } from "next-auth";
+import NavBar from "@/components/common/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,10 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider session={session}>
-          <GlobalContextProvider>{children}</GlobalContextProvider>
+          <GlobalContextProvider>
+            <NavBar />
+            {children}
+          </GlobalContextProvider>
         </AuthProvider>
       </body>
     </html>

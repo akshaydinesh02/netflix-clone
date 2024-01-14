@@ -1,5 +1,5 @@
 import db from "@/database";
-import Account from "@/models/Account";
+import Account from "@/models/profileSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
