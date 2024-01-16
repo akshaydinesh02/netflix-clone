@@ -1,5 +1,9 @@
-"use client";
+import AuthHOC from "@/components/HOC/AuthHOC";
 
 export default function Tv() {
-  return <div>Tv</div>;
+  return (
+    <AuthHOC>
+      <div>Tv</div>
+    </AuthHOC>
+  );
 }

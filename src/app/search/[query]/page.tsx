@@ -1,7 +1,6 @@
 "use client";
 
 import LoadingSpinner from "@/components/common/LoadingSpinner";
-import UnAuthPage from "@/components/unAuthPage";
 import { useSession } from "next-auth/react";
 
 export default function Search() {

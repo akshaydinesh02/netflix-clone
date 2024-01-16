@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
 
-const connectionString =
-  "mongodb+srv://<user>:<password>@netflix-clone-cluster.s0fqwop.mongodb.net/";
-
 const DB = process?.env?.DATABASE_STRING?.replace(
   "<PASSWORD>",
   process.env.DATABASE_PASSWORD ?? ""
