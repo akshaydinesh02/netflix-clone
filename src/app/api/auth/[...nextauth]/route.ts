@@ -117,18 +117,23 @@ const authOptions: AuthOptions = {
       token,
       user,
     }: {
-      session: Session;
+      session: any;
       token: JWT;
-      user: AdapterUser;
+      user: AdapterUser | null | undefined;
     }) {
-      // session.user.name =
-      //   session?.user?.name?.split(" ").join("").toLocaleLowerCase() || "name";
-      // session.user.uid = token.sub;
-
-      // user.name =
-      //   session?.user?.name?.split(" ").join("").toLocaleLowerCase() || "name";
-      // user.id = token.sub || "uid";
+      session.user.username =
+        session?.user?.name?.split(" ").join("").toLocaleLowerCase() ||
+        "username";
+      session.user.uid = token.sub;
       return session;
+    },
+    async jwt({ token, account, profile }) {
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token;
+        // token.id = profile?.id;
+      }
+      return token;
     },
   },
   secret: "default_secret_key",

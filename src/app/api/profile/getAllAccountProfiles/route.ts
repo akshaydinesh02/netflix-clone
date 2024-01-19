@@ -1,5 +1,6 @@
 import db from "@/database";
 import User from "@/models/userSchema";
+import Profile from "@/models/profileSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -11,12 +12,14 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
-    const allAccounts = await User.find({ uid: id });
+    const allProfiles = await Profile.find({ uid: id });
 
-    if (allAccounts) {
+    console.log("All profiles", allProfiles);
+
+    if (allProfiles) {
       return NextResponse.json({
         success: true,
-        data: allAccounts,
+        data: allProfiles,
       });
     } else {
       return NextResponse.json({

@@ -1,5 +1,6 @@
 import db from "@/database";
-import User from "@/models/userSchema";
+// import User from "@/models/userSchema";
+import Profile from "@/models/profileSchema";
 import { hash } from "bcryptjs";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -11,17 +12,17 @@ export async function POST(req: NextRequest) {
 
     const { name, pin, uid } = await req.json();
 
-    const doesAccountExist = await User.find({ uid, name });
-    const allAccounts = await User.find({});
+    const doesProfileExist = await Profile.find({ uid, name });
+    const allProfiles = await Profile.find({});
 
-    if (doesAccountExist && doesAccountExist.length > 0) {
+    if (doesProfileExist && doesProfileExist.length > 0) {
       return NextResponse.json({
         success: false,
         message: "Please try with a different name!",
       });
     }
 
-    if (allAccounts && allAccounts.length === 4) {
+    if (allProfiles && allProfiles.length === 4) {
       return NextResponse.json({
         success: false,
         message: "You can only add a maximum of 4 accounts!",
@@ -30,17 +31,17 @@ export async function POST(req: NextRequest) {
 
     const hashedPin = await hash(pin, 12);
 
-    const newAccount = await User.create({
+    const newProfile = await Profile.create({
       name,
-      ping: hashedPin,
+      pin: hashedPin,
       uid,
     });
-    console.log("New account", newAccount);
+    console.log("New Profile", newProfile);
 
-    if (newAccount) {
+    if (newProfile) {
       return NextResponse.json({
         success: true,
-        message: "Account created successfully!",
+        message: "Profile created successfully!",
       });
     } else {
       return NextResponse.json({

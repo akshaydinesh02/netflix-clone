@@ -7,8 +7,8 @@ import AuthHOC from "@/components/HOC/AuthHOC";
 
 export default function Home() {
   return (
-    <AuthHOC>
-      <Browse />
-    </AuthHOC>
+    // <AuthHOC>
+    <Browse />
+    // </AuthHOC>
   );
 }
