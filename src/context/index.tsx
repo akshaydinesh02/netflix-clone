@@ -10,11 +10,12 @@ import {
   Context,
   ReactNode,
   useContext,
+  useEffect,
 } from "react";
 
 interface IGlobalContext {
-  loggedInAccount: any | null;
-  setLoggedInAccount: Dispatch<SetStateAction<any | null>>;
+  loggedInProfile: any | null;
+  setLoggedInProfile: Dispatch<SetStateAction<any | null>>;
 
   accounts: Array<any>;
   setAccounts: Dispatch<SetStateAction<Array<any>>>;
@@ -32,13 +33,19 @@ export const GlobalContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [loggedInAccount, setLoggedInAccount] = useState(null);
+  const [loggedInProfile, setLoggedInProfile] = useState(null);
   const [accounts, setAccounts] = useState<Array<any>>([]);
   const [pageLoader, setPageLoader] = useState(true);
 
+  useEffect(() => {
+    const currentProfile = sessionStorage.getItem("currentProfile");
+    if (!currentProfile) return;
+    setLoggedInProfile(JSON.parse(currentProfile));
+  }, []);
+
   const value = {
-    loggedInAccount,
-    setLoggedInAccount,
+    loggedInProfile,
+    setLoggedInProfile,
     accounts,
     setAccounts,
     pageLoader,

@@ -1,43 +1,38 @@
 import db from "@/database";
-// import User from "@/models/userSchema";
 import Profile from "@/models/profileSchema";
-import { hash } from "bcryptjs";
+import User from "@/models/userSchema";
+import { compare } from "bcryptjs";
 import { NextResponse, NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    await db();
+    const { pin, profileId, userId } = await req.json();
 
-    const { name, pin, uid } = await req.json();
+    const currentProfile = await Profile.findOne({
+      _id: profileId,
+      userId: userId,
+    });
 
-    const allProfilesOfAccount = await Profile.find({ userId: uid });
-
-    if (allProfilesOfAccount && allProfilesOfAccount.length === 4) {
+    if (!currentProfile) {
       return NextResponse.json({
         success: false,
-        message: "You can only create a maximum of 4 accounts!",
+        message: "Account not found",
       });
     }
 
-    const hashedPin = await hash(pin, 12);
+    const isPinValid = await compare(pin, currentProfile.pin);
 
-    const newProfile = await Profile.create({
-      userId: uid,
-      name,
-      pin: hashedPin,
-    });
-
-    if (newProfile) {
+    if (isPinValid) {
       return NextResponse.json({
         success: true,
-        message: "Profile created successfully!",
+        message: "Logged in successfully",
       });
     } else {
       return NextResponse.json({
         success: false,
-        message: "Something went wrong",
+        message: "Incorrect pin",
       });
     }
   } catch (error: any) {

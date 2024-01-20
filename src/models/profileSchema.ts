@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const profileSchema = new mongoose.Schema(
   {
-    pid: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     name: String,
     pin: String,
   },
@@ -10,6 +13,6 @@ const profileSchema = new mongoose.Schema(
 );
 
 const Profile =
-  mongoose.models.profileSchema || mongoose.model("Profile", profileSchema);
+  mongoose.models.Profile || mongoose.model("Profile", profileSchema);
 
 export default Profile;

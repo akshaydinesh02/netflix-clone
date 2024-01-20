@@ -7,6 +7,9 @@ import LoadingSpinner from "../common/LoadingSpinner";
 import Image from "next/image";
 import { LockIcon } from "@/Icons/LockIcon";
 import AccountForm from "./ProfileForm";
+import { TrashIcon } from "@/Icons/TrashIcon";
+import PinContainer from "./PinContainer";
+import { usePathname, useRouter } from "next/navigation";
 
 const initialFormData = {
   name: "",
@@ -18,13 +21,21 @@ const ManageProfiles = () => {
   const setProfiles = useGlobalContext().setAccounts;
   const pageLoader = useGlobalContext().pageLoader;
   const setPageLoader = useGlobalContext().setPageLoader;
+  const setLoggedInProfile = useGlobalContext().setLoggedInProfile;
 
   const { data: session } = useSession();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const [showNewProfileForm, setShowNewProfileForm] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
-
-  console.log("All profiles", profiles);
+  const [showDeleteIcon, setShowDeleteIcon] = useState(false);
+  const [pin, setPin] = useState("");
+  const [pinError, setPinError] = useState(false);
+  const [showPinContainer, setShowPinContainer] = useState({
+    show: false,
+    currentProfile: null,
+  });
 
   async function getAllAccountProfiles() {
     try {
@@ -35,8 +46,6 @@ const ManageProfiles = () => {
           method: "GET",
         }
       );
-
-      // console.log("")
 
       const result = await response.json();
       if (result && result?.data?.length) {
@@ -63,13 +72,74 @@ const ManageProfiles = () => {
           uid: session?.user?.uid,
         }),
       });
-      console.log("Response", await response.json());
+      console.log("Response -- save profile", await response.json());
     } catch (error: any) {
       console.error("Error while saving profile", error);
     } finally {
       await getAllAccountProfiles();
       setShowNewProfileForm(false);
       setFormData(initialFormData);
+    }
+  }
+
+  async function handleRemoveProfile(profileData: any) {
+    try {
+      const response = await fetch(
+        `/api/profile/deleteProfile?id=${profileData._id}&userId=${
+          // @ts-ignore
+          session?.user?.uid
+        }`,
+        {
+          method: "DELETE",
+        }
+      );
+      console.log("Response -- delete profile", await response.json());
+    } catch (error: any) {
+      console.error("Error while deleting profile", error);
+    } finally {
+      setShowDeleteIcon(false);
+      await getAllAccountProfiles();
+    }
+  }
+
+  async function handlePinSubmit(value: string, index: number) {
+    if (!showPinContainer?.currentProfile) return;
+
+    try {
+      const response: Response = await fetch(`/api/profile/validatePin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // @ts-ignore
+          userId: session?.user?.uid,
+          // @ts-ignore
+          profileId: showPinContainer?.currentProfile._id,
+          pin: value,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setLoggedInProfile(showPinContainer.currentProfile);
+        sessionStorage.setItem(
+          "currentProfile",
+          JSON.stringify(showPinContainer.currentProfile)
+        );
+        router.push(pathname);
+        setPageLoader(false);
+      } else {
+        setPinError(true);
+        setPin("");
+        setLoggedInProfile(null);
+        sessionStorage.removeItem("currentProfile");
+      }
+
+      console.log("Response -- validate profile pin", result);
+    } catch (error: any) {
+      console.error("Error while validating user profile PIN", error);
     }
   }
 
@@ -87,22 +157,38 @@ const ManageProfiles = () => {
         </h1>
         <ul className="flex gap-8 p-0 my-[25px]">
           {profiles.length
-            ? profiles.map((account: any) => {
+            ? profiles.map((profile: any) => {
                 return (
                   <li
-                    key={account._id}
+                    key={profile._id}
                     className="max-w-[200px] w-[155px] cursor-pointer flex flex-col items-center gap-3 min-w-[200px]"
+                    onClick={() =>
+                      !showDeleteIcon &&
+                      setShowPinContainer({
+                        show: true,
+                        currentProfile: profile,
+                      })
+                    }
                   >
                     <div className="relative">
                       <Image
                         className="max-w-[200px] rounded min-w-[84px] max-h-[200px] min-h-[84px] object-cover w-[155px] h-[155px]"
-                        src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
-                        alt={account._id}
+                        src="/default-profile-image.png"
+                        alt={profile._id}
                         width={25}
                         height={25}
                       />
+                      {showDeleteIcon ? (
+                        <div
+                          onClick={() => handleRemoveProfile(profile)}
+                          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 cursor-pointer"
+                        >
+                          <TrashIcon />
+                          {/* <p className="text-white">TEST</p> */}
+                        </div>
+                      ) : null}
                     </div>
-                    <span className="mb-4">{account.name}</span>
+                    <span className="mb-4">{profile.name}</span>
                     <LockIcon />
                   </li>
                 );
@@ -118,7 +204,24 @@ const ManageProfiles = () => {
             </li>
           ) : null}
         </ul>
+        <div className="text-center">
+          <span
+            onClick={() => setShowDeleteIcon(true)}
+            className="border border-gray-100 cursor-pointer tracking-wide inline-flex text-sm px-[1.5em] py-[0.5em]"
+          >
+            Manage Profiles
+          </span>
+        </div>
       </div>
+      <PinContainer
+        pin={pin}
+        setPin={setPin}
+        pinError={pinError}
+        setPinError={setPinError}
+        showPinContainer={showPinContainer}
+        setShowPinContainer={setShowPinContainer}
+        handlePinSubmit={handlePinSubmit}
+      />
       <AccountForm
         formData={formData}
         setFormData={setFormData}

@@ -1,38 +1,32 @@
 import db from "@/database";
-// import User from "@/models/userSchema";
 import Profile from "@/models/profileSchema";
-import { hash } from "bcryptjs";
 import { NextResponse, NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
   try {
     await db();
 
-    const { name, pin, uid } = await req.json();
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    const userId = searchParams.get("userId");
 
-    const allProfilesOfAccount = await Profile.find({ userId: uid });
-
-    if (allProfilesOfAccount && allProfilesOfAccount.length === 4) {
+    if (!id || !userId) {
       return NextResponse.json({
         success: false,
-        message: "You can only create a maximum of 4 accounts!",
+        message: "Profile ID and user ID are mandatory",
       });
     }
 
-    const hashedPin = await hash(pin, 12);
-
-    const newProfile = await Profile.create({
-      userId: uid,
-      name,
-      pin: hashedPin,
+    const deletedProfile = await Profile.findByIdAndDelete({
+      _id: id,
+      userId: userId,
     });
-
-    if (newProfile) {
+    if (deletedProfile) {
       return NextResponse.json({
         success: true,
-        message: "Profile created successfully!",
+        message: "Profile deleted successfully",
       });
     } else {
       return NextResponse.json({
