@@ -1,5 +1,6 @@
 "use client";
 
+import CommonLayout from "@/components/common/CommonLayout";
 import LoginComponent from "@/components/common/LoginComponent";
 import ManageProfiles from "@/components/ManageProfiles";
 import { useGlobalContext } from "@/context";
@@ -12,12 +13,12 @@ export default function Browse() {
 
   const loggedInProfile = useGlobalContext().loggedInProfile;
 
-  if (loggedInProfile === null) return <ManageProfiles />;
   if (session === null) return <LoginComponent />;
+  if (loggedInProfile === null) return <ManageProfiles />;
   return (
-    <div>
-      <p>Browse page</p>
-    </div>
+    <main className="flex min-h-screen flex-col">
+      <CommonLayout />
+    </main>
   );
 }
 

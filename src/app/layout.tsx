@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import GlobalContextProvider from "@/context";
 import AuthProvider from "@/auth-provider";
-import { getServerSession } from "next-auth";
-import NavBar from "@/components/common/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +20,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <GlobalContextProvider>
-            <NavBar />
-            {children}
-          </GlobalContextProvider>
+          <GlobalContextProvider>{children}</GlobalContextProvider>
         </AuthProvider>
       </body>
     </html>

@@ -17,8 +17,8 @@ interface IGlobalContext {
   loggedInProfile: any | null;
   setLoggedInProfile: Dispatch<SetStateAction<any | null>>;
 
-  accounts: Array<any>;
-  setAccounts: Dispatch<SetStateAction<Array<any>>>;
+  profiles: Array<any>;
+  setProfiles: Dispatch<SetStateAction<Array<any>>>;
 
   pageLoader: boolean;
   setPageLoader: Dispatch<SetStateAction<boolean>>;
@@ -34,7 +34,7 @@ export const GlobalContextProvider = ({
   children: ReactNode;
 }) => {
   const [loggedInProfile, setLoggedInProfile] = useState(null);
-  const [accounts, setAccounts] = useState<Array<any>>([]);
+  const [profiles, setProfiles] = useState<Array<any>>([]);
   const [pageLoader, setPageLoader] = useState(true);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ export const GlobalContextProvider = ({
   const value = {
     loggedInProfile,
     setLoggedInProfile,
-    accounts,
-    setAccounts,
+    profiles,
+    setProfiles,
     pageLoader,
     setPageLoader,
   };

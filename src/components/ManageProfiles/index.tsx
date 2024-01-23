@@ -17,8 +17,8 @@ const initialFormData = {
 };
 
 const ManageProfiles = () => {
-  const profiles = useGlobalContext().accounts;
-  const setProfiles = useGlobalContext().setAccounts;
+  const profiles = useGlobalContext().profiles;
+  const setProfiles = useGlobalContext().setProfiles;
   const pageLoader = useGlobalContext().pageLoader;
   const setPageLoader = useGlobalContext().setPageLoader;
   const setLoggedInProfile = useGlobalContext().setLoggedInProfile;
