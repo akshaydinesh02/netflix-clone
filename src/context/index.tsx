@@ -22,6 +22,9 @@ interface IGlobalContext {
 
   pageLoader: boolean;
   setPageLoader: Dispatch<SetStateAction<boolean>>;
+
+  mediaData: Array<any>;
+  setMediaData: Dispatch<Array<any>>;
 }
 
 const GlobalContext = createContext<IGlobalContext | null>(
@@ -33,9 +36,10 @@ export const GlobalContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [loggedInProfile, setLoggedInProfile] = useState(null);
+  const [loggedInProfile, setLoggedInProfile] = useState<any>(null);
   const [profiles, setProfiles] = useState<Array<any>>([]);
-  const [pageLoader, setPageLoader] = useState(true);
+  const [pageLoader, setPageLoader] = useState<boolean>(true);
+  const [mediaData, setMediaData] = useState<Array<any>>([]);
 
   useEffect(() => {
     const currentProfile = sessionStorage.getItem("currentProfile");
@@ -50,6 +54,8 @@ export const GlobalContextProvider = ({
     setProfiles,
     pageLoader,
     setPageLoader,
+    mediaData,
+    setMediaData,
   };
 
   const { data: session } = useSession();

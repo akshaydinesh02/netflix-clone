@@ -10,12 +10,20 @@ const nextConfig = {
 
     GOOGLE_AUTH_CLIENT_ID: process.env.GOOGLE_AUTH_CLIENT_ID,
     GOOGLE_AUTH_CLIENT_SECRET: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+
+    TMDB_BASE_URL: process.env.TMDB_BASE_URL,
+    TMDB_API_KEY: process.env.TMDB_API_KEY,
   },
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "fastly.picsum.photos",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "image.tmdb.org",
         port: "",
       },
     ],

@@ -49,7 +49,6 @@ const ManageProfiles = () => {
 
       const result = await response.json();
       if (result && result?.data?.length) {
-        console.log("Results", result.data);
         setProfiles(result.data);
       }
     } catch (error: any) {
