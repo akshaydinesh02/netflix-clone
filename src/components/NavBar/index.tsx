@@ -113,6 +113,12 @@ const NavBar = () => {
             {menuItems.map((item) => {
               return (
                 <li
+                  onClick={() => {
+                    setPageLoader(true);
+                    router.push(item.path);
+                    setSearchQuery("");
+                    setShowSearchBar(false);
+                  }}
                   key={item.id}
                   className="cursor-pointer text-[16px] text-white transition duration-[0.4s] hover:text-gray-400"
                 >
