@@ -9,7 +9,10 @@ export const getTrendingMedia = async (type: string) => {
       }
     );
     const data = await response.json();
-    return data.results;
+    const editedResults = data.results.map((item: any) => {
+      return { ...item, mediaType: type };
+    });
+    return editedResults;
   } catch (error: any) {
     console.error("Error while getting trending media", error);
     return null;
@@ -27,7 +30,10 @@ export const getPopularMedia = async (type: string) => {
       }
     );
     const data = await response.json();
-    return data.results;
+    const editedResults = data.results.map((item: any) => {
+      return { ...item, mediaType: type };
+    });
+    return editedResults;
   } catch (error: any) {
     console.error("Error while getting popular media", error);
     return null;
@@ -45,7 +51,10 @@ export const getTopRatedMedia = async (type: string) => {
       }
     );
     const data = await response.json();
-    return data.results;
+    const editedResults = data.results.map((item: any) => {
+      return { ...item, mediaType: type };
+    });
+    return editedResults;
   } catch (error: any) {
     console.error("Error while getting top rated media", error);
     return null;
@@ -63,7 +72,28 @@ export const getMediaByGenre = async (type: string, genreId: number) => {
       }
     );
     const data = await response.json();
-    return data.results;
+    const editedResults = data.results.map((item: any) => {
+      return { ...item, mediaType: type };
+    });
+    return editedResults;
+  } catch (error: any) {
+    console.error("Error while getting top rated media", error);
+    return null;
+  }
+};
+
+export const getMediaVideoByID = async (type: string, id: number) => {
+  const baseUrl = process.env.TMDB_BASE_URL;
+  const apiKey = process.env.TMDB_API_KEY;
+  try {
+    const response = await fetch(
+      `${baseUrl}/${type}/${id}/videos?api_key=${apiKey}&language=en-US&append_to_response=videos`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    return data;
   } catch (error: any) {
     console.error("Error while getting top rated media", error);
     return null;

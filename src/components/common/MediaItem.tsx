@@ -5,6 +5,7 @@ import { ChevronDownIcon } from "@/Icons/ChevronDownIcon";
 import { PlusIcon } from "@/Icons/PlusIcon";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const baseUrl = "https://image.tmdb.org/t/p/w500";
 
@@ -16,6 +17,8 @@ interface IMediaItem {
 const MediaItem = (props: IMediaItem) => {
   const { item, title } = props;
   const addedToFav = false;
+  const router = useRouter();
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.5 }}
@@ -30,8 +33,12 @@ const MediaItem = (props: IMediaItem) => {
         <Image
           src={`${baseUrl}/${item?.backdrop_path || item?.poster_path}`}
           alt={item?.title || title || "Media item"}
-          layout="fill"
+          fill
+          sizes="100vw"
           className="rounded sm object-cover md:rounded hover:rounded-sm"
+          onClick={() =>
+            router.push(`/watch/${item?.mediaType || "movie"}/${item?.id}`)
+          }
         />
         <div className="space-x-3 hidden absolute p-2 bottom-0 buttonWrapper">
           <button className="cursor-pointer border flex p-2 items-center gap-x-2 rounded-full text-sm font-semibold transition hover:opacity-90 border-white bg-black opacity-75 text-black">
