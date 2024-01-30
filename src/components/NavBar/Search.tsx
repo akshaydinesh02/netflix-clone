@@ -1,6 +1,7 @@
 "use client";
 
 import { SearchIcon } from "@/Icons/SearchIcon";
+import { useParams, useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 
 interface ISearch {
@@ -20,6 +21,21 @@ const Search = (props: ISearch) => {
     setPageLoader,
     setShowSearchBar,
   } = props;
+
+  const params = useParams();
+  const router = useRouter();
+
+  function handleSubmit(e: any) {
+    if (e.key === "Enter" && searchQuery && searchQuery.trim() !== "") {
+      setPageLoader(true);
+      if (pathName.includes("/search")) {
+        router.replace(`/search/${searchQuery}`);
+      } else {
+        router.push(`/search/${searchQuery}`);
+      }
+    }
+  }
+
   return (
     <div className="hidden md:flex justify-center items-center text-center">
       <div className="bg-black-0.75 border border-[hsla(0,0%,100%,0.85)] px-4 flex items-center text-center ">
@@ -27,6 +43,7 @@ const Search = (props: ISearch) => {
           <input
             name="search"
             value={searchQuery}
+            onKeyUp={handleSubmit}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search Movies, TV and Dramas"
             className="bg-transparent text-[14px] font-medium h-[34px] px-4 py-2 placeholder:text-[14px] font-md text-white outline-none w-[210px]"

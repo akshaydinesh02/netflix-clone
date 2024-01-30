@@ -18,9 +18,14 @@ const MediaRow = (props: IMediaRow) => {
       <div className="group relative md:-ml-2">
         <div className="flex item-center scrollbar-hide space-x-0.5 overflow-x-scroll md:space-x-2.5 md:p-2">
           {medias.length
-            ? medias.map((item: any) => (
-                <MediaItem title={title} key={item.id} item={item} />
-              ))
+            ? medias
+                .filter(
+                  (item: any) =>
+                    item?.backdrop_path !== null && item?.poster_path !== null
+                )
+                .map((item: any) => (
+                  <MediaItem title={title} key={item.id} item={item} />
+                ))
             : null}
         </div>
       </div>

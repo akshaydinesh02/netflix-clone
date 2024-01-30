@@ -25,6 +25,9 @@ interface IGlobalContext {
 
   mediaData: Array<any>;
   setMediaData: Dispatch<Array<any>>;
+
+  searchResults: Array<any>;
+  setSearchResults: Dispatch<Array<any>>;
 }
 
 const GlobalContext = createContext<IGlobalContext | null>(
@@ -40,6 +43,7 @@ export const GlobalContextProvider = ({
   const [profiles, setProfiles] = useState<Array<any>>([]);
   const [pageLoader, setPageLoader] = useState<boolean>(true);
   const [mediaData, setMediaData] = useState<Array<any>>([]);
+  const [searchResults, setSearchResults] = useState<Array<any>>([]);
 
   useEffect(() => {
     const currentProfile = sessionStorage.getItem("currentProfile");
@@ -56,6 +60,8 @@ export const GlobalContextProvider = ({
     setPageLoader,
     mediaData,
     setMediaData,
+    searchResults,
+    setSearchResults,
   };
 
   const { data: session } = useSession();

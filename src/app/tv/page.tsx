@@ -34,48 +34,57 @@ export default function Tv() {
       const western = await getMediaByGenre("tv", 37);
       const drama = await getMediaByGenre("tv", 18);
 
-      setMediaData([
-        {
-          title: "Action & Adventure",
-          media: actionAdventure,
-        },
-        {
-          title: "Crime",
-          media: crime,
-        },
-        {
-          title: "Comedy",
-          media: comedy,
-        },
-        {
-          title: "Family",
-          media: family,
-        },
-        {
-          title: "Mystery",
-          media: mystery,
-        },
-        {
-          title: "Reality",
-          media: reality,
-        },
-        {
-          title: "Sci-Fi & Fantasy",
-          media: sciFiAndFantasy,
-        },
-        {
-          title: "War",
-          media: war,
-        },
-        {
-          title: "Western",
-          media: western,
-        },
-        {
-          title: "Drama",
-          media: drama,
-        },
-      ]);
+      setMediaData(
+        [
+          {
+            title: "Action & Adventure",
+            media: actionAdventure,
+          },
+          {
+            title: "Crime",
+            media: crime,
+          },
+          {
+            title: "Comedy",
+            media: comedy,
+          },
+          {
+            title: "Family",
+            media: family,
+          },
+          {
+            title: "Mystery",
+            media: mystery,
+          },
+          {
+            title: "Reality",
+            media: reality,
+          },
+          {
+            title: "Sci-Fi & Fantasy",
+            media: sciFiAndFantasy,
+          },
+          {
+            title: "War",
+            media: war,
+          },
+          {
+            title: "Western",
+            media: western,
+          },
+          {
+            title: "Drama",
+            media: drama,
+          },
+        ].map((item) => ({
+          ...item,
+          medias: item.media.map((mediaItem: any) => ({
+            ...mediaItem,
+            type: "tv",
+            addedToFavorites: false,
+          })),
+        }))
+      );
 
       setPageLoader(false);
     }

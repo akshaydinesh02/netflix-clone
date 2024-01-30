@@ -36,32 +36,41 @@ export default function Browse() {
       const popularMovies = await getPopularMedia("movie");
       const topRatedMovies = await getTopRatedMedia("movie");
 
-      setMediaData([
-        {
-          title: "Trending TV Shows",
-          media: trendingTvShows,
-        },
-        {
-          title: "Popular TV Shows",
-          media: popularTvShows,
-        },
-        {
-          title: "Top Rated TV Shows",
-          media: topRatedTvShows,
-        },
-        {
-          title: "Trending Movies",
-          media: trendingMovies,
-        },
-        {
-          title: "Popular Movies",
-          media: popularMovies,
-        },
-        {
-          title: "Top Rated Movies",
-          media: topRatedMovies,
-        },
-      ]);
+      setMediaData(
+        [
+          {
+            title: "Trending TV Shows",
+            media: trendingTvShows,
+          },
+          {
+            title: "Popular TV Shows",
+            media: popularTvShows,
+          },
+          {
+            title: "Top Rated TV Shows",
+            media: topRatedTvShows,
+          },
+          {
+            title: "Trending Movies",
+            media: trendingMovies,
+          },
+          {
+            title: "Popular Movies",
+            media: popularMovies,
+          },
+          {
+            title: "Top Rated Movies",
+            media: topRatedMovies,
+          },
+        ].map((item) => ({
+          ...item,
+          medias: item.media.map((mediaItem: any) => ({
+            ...mediaItem,
+            type: "movie",
+            addedToFavorites: false,
+          })),
+        }))
+      );
 
       setPageLoader(false);
     }

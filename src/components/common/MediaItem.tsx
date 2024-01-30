@@ -12,10 +12,11 @@ const baseUrl = "https://image.tmdb.org/t/p/w500";
 interface IMediaItem {
   item: any;
   title: string;
+  searchView?: boolean;
 }
 
 const MediaItem = (props: IMediaItem) => {
-  const { item, title } = props;
+  const { item, title, searchView = false } = props;
   const addedToFav = false;
   const router = useRouter();
 
