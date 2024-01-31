@@ -28,6 +28,27 @@ interface IGlobalContext {
 
   searchResults: Array<any>;
   setSearchResults: Dispatch<Array<any>>;
+
+  currentSelectedMediaInfo: {
+    type: string;
+    id: string;
+  };
+
+  setCurrentSelectedMediaInfo: Dispatch<
+    SetStateAction<{
+      type: string;
+      id: string;
+    }>
+  >;
+
+  showDetailsPopup: boolean;
+  setShowDetailsPopup: Dispatch<SetStateAction<boolean>>;
+
+  mediaDetails: any | null;
+  setMediaDetails: Dispatch<SetStateAction<any>>;
+
+  similarMedia: Array<any>;
+  setSimilarMedia: Dispatch<SetStateAction<Array<any>>>;
 }
 
 const GlobalContext = createContext<IGlobalContext | null>(
@@ -44,6 +65,15 @@ export const GlobalContextProvider = ({
   const [pageLoader, setPageLoader] = useState<boolean>(true);
   const [mediaData, setMediaData] = useState<Array<any>>([]);
   const [searchResults, setSearchResults] = useState<Array<any>>([]);
+  const [currentSelectedMediaInfo, setCurrentSelectedMediaInfo] = useState<any>(
+    {
+      type: "",
+      id: "",
+    }
+  );
+  const [showDetailsPopup, setShowDetailsPopup] = useState<boolean>(false);
+  const [mediaDetails, setMediaDetails] = useState<any | null>(null);
+  const [similarMedia, setSimilarMedia] = useState<Array<any>>([]);
 
   useEffect(() => {
     const currentProfile = sessionStorage.getItem("currentProfile");
@@ -62,6 +92,14 @@ export const GlobalContextProvider = ({
     setMediaData,
     searchResults,
     setSearchResults,
+    currentSelectedMediaInfo,
+    setCurrentSelectedMediaInfo,
+    showDetailsPopup,
+    setShowDetailsPopup,
+    mediaDetails,
+    setMediaDetails,
+    similarMedia,
+    setSimilarMedia,
   };
 
   const { data: session } = useSession();

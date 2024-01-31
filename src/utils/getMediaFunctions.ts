@@ -110,3 +110,39 @@ export const getSearchResults = async (type: string, query: string) => {
     return null;
   }
 };
+
+export const getMediaDetailsByID = async (type: string, id: number) => {
+  const baseUrl = process.env.TMDB_BASE_URL;
+  const apiKey = process.env.TMDB_API_KEY;
+  try {
+    const response = await fetch(
+      `${baseUrl}/${type}/${id}?api_key=${apiKey}&language=en-US&append_to_response=videos`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    console.error("Error while getting media details by ID", error);
+    return null;
+  }
+};
+
+export const getSimilarMediaDetailsByID = async (type: string, id: number) => {
+  const baseUrl = process.env.TMDB_BASE_URL;
+  const apiKey = process.env.TMDB_API_KEY;
+  try {
+    const response = await fetch(
+      `${baseUrl}/${type}/${id}/similar?api_key=${apiKey}&language=en-US`,
+      {
+        method: "GET",
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error: any) {
+    console.error("Error while getting similar media", error);
+    return null;
+  }
+};

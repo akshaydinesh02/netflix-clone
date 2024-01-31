@@ -10,6 +10,7 @@ import Search from "./Search";
 import { SearchIcon } from "@/Icons/SearchIcon";
 import { useGlobalContext } from "@/context";
 import AccountPopup from "./ProfilesPopup";
+import DetailsPopup from "../common/DetailsPopup";
 
 const NavBar = () => {
   const { data: session } = useSession();
@@ -22,6 +23,9 @@ const NavBar = () => {
     setLoggedInProfile,
     profiles,
     setProfiles,
+    showDetailsPopup,
+    setShowDetailsPopup,
+    currentSelectedMediaInfo,
   } = useGlobalContext();
 
   const menuItems = [
@@ -158,6 +162,11 @@ const NavBar = () => {
           </div>
         </div>
       </header>
+      <DetailsPopup
+        show={showDetailsPopup}
+        setShow={setShowDetailsPopup}
+        media={currentSelectedMediaInfo}
+      />
       {showAccountPopup ? (
         <AccountPopup
           profiles={profiles}

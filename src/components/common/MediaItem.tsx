@@ -3,6 +3,7 @@
 import { CheckIcon } from "@/Icons/CheckIcon";
 import { ChevronDownIcon } from "@/Icons/ChevronDownIcon";
 import { PlusIcon } from "@/Icons/PlusIcon";
+import { useGlobalContext } from "@/context";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,14 +12,21 @@ const baseUrl = "https://image.tmdb.org/t/p/w500";
 
 interface IMediaItem {
   item: any;
-  title: string;
+  title?: string;
   searchView?: boolean;
+  similarMovieView?: boolean;
 }
 
 const MediaItem = (props: IMediaItem) => {
-  const { item, title, searchView = false } = props;
-  const addedToFav = false;
+  const {
+    item,
+    title = "",
+    searchView = false,
+    similarMovieView = false,
+  } = props;
   const router = useRouter();
+  const { setCurrentSelectedMediaInfo, setShowDetailsPopup } =
+    useGlobalContext();
 
   return (
     <motion.div
@@ -43,15 +51,25 @@ const MediaItem = (props: IMediaItem) => {
         />
         <div className="space-x-3 hidden absolute p-2 bottom-0 buttonWrapper">
           <button className="cursor-pointer border flex p-2 items-center gap-x-2 rounded-full text-sm font-semibold transition hover:opacity-90 border-white bg-black opacity-75 text-black">
-            {addedToFav ? (
+            {item?.addedToFavourites ? (
               <CheckIcon color="#ffffff" className="h-7 w-7" />
             ) : (
               <PlusIcon color="#ffffff" className="h-7 w-7" />
             )}
           </button>
-          <button className="cursor-pointer border flex p-2 items-center gap-x-2 rounded-full text-sm font-semibold transition hover:opacity-90 border-white bg-black opacity-75">
+          <button
+            onClick={() => {
+              setCurrentSelectedMediaInfo({
+                type: item?.mediaType,
+                id: item?.id,
+              });
+              setShowDetailsPopup(true);
+            }}
+            className="cursor-pointer border flex p-2 items-center gap-x-2 rounded-full text-sm font-semibold transition hover:opacity-90 border-white bg-black opacity-75"
+          >
             <ChevronDownIcon color="#ffffff" className="h-7 w-7" />
           </button>
+          p
         </div>
       </div>
     </motion.div>

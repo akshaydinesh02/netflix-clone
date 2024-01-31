@@ -41,10 +41,8 @@ const Banner = (props: IBanner) => {
       </p>
       <div className="flex space-x-3">
         <button
-          onClick={
-            // () => console.log("randommedia", randomMedia)
-            () =>
-              router.push(`/watch/${randomMedia?.mediaType}/${randomMedia?.id}`)
+          onClick={() =>
+            router.push(`/watch/${randomMedia?.mediaType}/${randomMedia?.id}`)
           }
           className="cursor-pointer flex items-center gap-x-2 rounded px-5 py-1.5 text-sm font-semibold transition hover:opacity-75 md:py-2.5 md:px-8 md:text-xl bg-white text-black"
         >

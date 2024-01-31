@@ -1,4 +1,5 @@
-export const CloseIcon = () => {
+export const CloseIcon = (props: any) => {
+  const { className } = props;
   return (
     <svg
       width="24"
@@ -6,7 +7,7 @@ export const CloseIcon = () => {
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="svg-icon svg-icon-close ltr-0 e1mhci4z1"
+      className={`svg-icon svg-icon-close ltr-0 e1mhci4z1 ${className || ""}`}
       data-name="X"
       aria-hidden="true"
     >

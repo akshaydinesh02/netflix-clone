@@ -36,8 +36,8 @@ export default function Browse() {
       const popularMovies = await getPopularMedia("movie");
       const topRatedMovies = await getTopRatedMedia("movie");
 
-      setMediaData(
-        [
+      setMediaData([
+        ...[
           {
             title: "Trending TV Shows",
             media: trendingTvShows,
@@ -50,6 +50,15 @@ export default function Browse() {
             title: "Top Rated TV Shows",
             media: topRatedTvShows,
           },
+        ].map((item) => ({
+          ...item,
+          media: item.media.map((mediaItem: any) => ({
+            ...mediaItem,
+            mediaType: "tv",
+            addedToFavorites: false,
+          })),
+        })),
+        ...[
           {
             title: "Trending Movies",
             media: trendingMovies,
@@ -66,11 +75,11 @@ export default function Browse() {
           ...item,
           medias: item.media.map((mediaItem: any) => ({
             ...mediaItem,
-            type: "movie",
+            mediaType: "movie",
             addedToFavorites: false,
           })),
-        }))
-      );
+        })),
+      ]);
 
       setPageLoader(false);
     }
