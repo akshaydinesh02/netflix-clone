@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const { name, pin, uid } = await req.json();
 
-    const allProfilesOfAccount = await Profile.find({ userId: uid });
+    const allProfilesOfAccount = await Profile.find({ userId: uid }).exec();
 
     if (allProfilesOfAccount && allProfilesOfAccount.length === 4) {
       return NextResponse.json({

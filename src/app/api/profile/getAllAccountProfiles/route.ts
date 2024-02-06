@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
-    const allProfiles = await Profile.find({ userId: id });
+    const allProfiles = await Profile.find({ userId: id }).exec();
 
     if (allProfiles) {
       return NextResponse.json({

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const currentProfile = await Profile.findOne({
       _id: profileId,
       userId: userId,
-    });
+    }).exec();
 
     if (!currentProfile) {
       return NextResponse.json({

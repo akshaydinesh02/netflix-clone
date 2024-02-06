@@ -12,10 +12,11 @@ export async function POST(req: NextRequest) {
 
     const isAlreadyFavorite = await Favorite.find({
       uid: data.uid,
-      movieID: data.movieID,
-      accountID: data.accountID,
+      mediaID: data.mediaID,
       profileID: data.profileID,
-    });
+    }).exec();
+
+    console.log("isAlreadyFavorite", isAlreadyFavorite);
 
     if (isAlreadyFavorite && isAlreadyFavorite.length > 0) {
       return NextResponse.json({
@@ -24,9 +25,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const newFavorite = await Favorite.create({
-      data,
-    });
+    const newFavorite = await Favorite.create(data);
 
     if (newFavorite) {
       return NextResponse.json({

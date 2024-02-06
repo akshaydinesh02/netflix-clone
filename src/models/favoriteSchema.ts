@@ -2,11 +2,17 @@ import mongoose from "mongoose";
 
 const favoriteSchema = new mongoose.Schema(
   {
-    uid: String,
-    profileID: String,
+    uid: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    profileID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Profile",
+    },
     backdrop_path: String,
     poster_path: String,
-    movieID: Number,
+    mediaID: Number,
     type: String,
   },
   { timestamps: true }

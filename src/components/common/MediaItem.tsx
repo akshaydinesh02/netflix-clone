@@ -5,8 +5,10 @@ import { ChevronDownIcon } from "@/Icons/ChevronDownIcon";
 import { PlusIcon } from "@/Icons/PlusIcon";
 import { useGlobalContext } from "@/context";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import mongoose from "mongoose";
 
 const baseUrl = "https://image.tmdb.org/t/p/w500";
 
@@ -25,8 +27,36 @@ const MediaItem = (props: IMediaItem) => {
     similarMovieView = false,
   } = props;
   const router = useRouter();
-  const { setCurrentSelectedMediaInfo, setShowDetailsPopup } =
+  const { setCurrentSelectedMediaInfo, setShowDetailsPopup, loggedInProfile } =
     useGlobalContext();
+
+  const { data: session } = useSession();
+
+  async function handleAddToFavorites(item: any) {
+    const { backdrop_path, poster_path, id, mediaType } = item;
+    console.log("Item", item);
+
+    const response = await fetch(`/api/favorites/addFavorite`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        backdrop_path,
+        poster_path,
+        mediaID: id,
+        type: mediaType,
+        // @ts-ignore
+        uid: session?.user?.uid,
+        profileID: loggedInProfile?._id,
+      }),
+    });
+
+    const result = await response.json();
+    console.log("Result", result);
+  }
+
+  async function handleRemoveFromFavorites(item: any) {}
 
   return (
     <motion.div
@@ -50,7 +80,14 @@ const MediaItem = (props: IMediaItem) => {
           }
         />
         <div className="space-x-3 hidden absolute p-2 bottom-0 buttonWrapper">
-          <button className="cursor-pointer border flex p-2 items-center gap-x-2 rounded-full text-sm font-semibold transition hover:opacity-90 border-white bg-black opacity-75 text-black">
+          <button
+            onClick={
+              item?.addedToFavorites
+                ? () => handleRemoveFromFavorites(item)
+                : () => handleAddToFavorites(item)
+            }
+            className="cursor-pointer border flex p-2 items-center gap-x-2 rounded-full text-sm font-semibold transition hover:opacity-90 border-white bg-black opacity-75 text-black"
+          >
             {item?.addedToFavourites ? (
               <CheckIcon color="#ffffff" className="h-7 w-7" />
             ) : (

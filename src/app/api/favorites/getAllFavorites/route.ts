@@ -1,5 +1,5 @@
 import db from "@/database";
-import User from "@/models/userSchema";
+import Favorite from "@/models/favoriteSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -12,12 +12,12 @@ export async function GET(req: NextRequest) {
     const id = searchParams.get("id");
     const profileID = searchParams.get("profileID");
 
-    const allAccounts = await User.find({ uid: id });
+    const allFavorites = await Favorite.find({ uid: id, profileID: profileID });
 
-    if (allAccounts) {
+    if (allFavorites) {
       return NextResponse.json({
         success: true,
-        data: allAccounts,
+        data: allFavorites,
       });
     } else {
       return NextResponse.json({

@@ -1,5 +1,5 @@
 import db from "@/database";
-import Profile from "@/models/profileSchema";
+import User from "@/models/userSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -10,23 +10,19 @@ export async function DELETE(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
-    const userId = searchParams.get("userId");
 
-    if (!id || !userId) {
+    if (!id) {
       return NextResponse.json({
         success: false,
-        message: "Profile ID and user ID are mandatory",
+        message: "Favorite item ID is mandatory",
       });
     }
 
-    const deletedProfile = await Profile.findByIdAndDelete({
-      _id: id,
-      userId: userId,
-    }).exec();
-    if (deletedProfile) {
+    const deletedFavorite = await User.findByIdAndDelete(id);
+    if (deletedFavorite) {
       return NextResponse.json({
         success: true,
-        message: "Profile deleted successfully",
+        message: "Favorite item removed successfully",
       });
     } else {
       return NextResponse.json({
