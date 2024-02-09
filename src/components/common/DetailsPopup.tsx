@@ -79,7 +79,7 @@ const DetailsPopup = (props: IDetailsPopup) => {
         extractedSimilarMedia?.results?.map((item: any) => ({
           ...item,
           mediaType: currentSelectedMediaInfo.type === "movie" ? "movie" : "tv",
-          addedToFavourites: false,
+          addedToFavorites: false,
         }))
       );
 

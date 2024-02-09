@@ -39,7 +39,7 @@ export default function Search() {
             .map((item: any) => ({
               ...item,
               type: "tv",
-              addedToFavourites: false,
+              addedToFavorites: false,
             })),
 
           ...movies
@@ -50,7 +50,7 @@ export default function Search() {
             .map((item: any) => ({
               ...item,
               type: "movie",
-              addedToFavourites: false,
+              addedToFavorites: false,
             })),
         ]);
 

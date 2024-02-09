@@ -7,7 +7,7 @@ import { useGlobalContext } from "@/context";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import mongoose from "mongoose";
 
 const baseUrl = "https://image.tmdb.org/t/p/w500";
@@ -17,6 +17,7 @@ interface IMediaItem {
   title?: string;
   searchView?: boolean;
   similarMovieView?: boolean;
+  listView?: boolean;
 }
 
 const MediaItem = (props: IMediaItem) => {
@@ -25,16 +26,17 @@ const MediaItem = (props: IMediaItem) => {
     title = "",
     searchView = false,
     similarMovieView = false,
+    listView = false,
   } = props;
   const router = useRouter();
   const { setCurrentSelectedMediaInfo, setShowDetailsPopup, loggedInProfile } =
     useGlobalContext();
 
   const { data: session } = useSession();
+  const pathName = usePathname();
 
   async function handleAddToFavorites(item: any) {
     const { backdrop_path, poster_path, id, mediaType } = item;
-    console.log("Item", item);
 
     const response = await fetch(`/api/favorites/addFavorite`, {
       method: "POST",
@@ -54,6 +56,9 @@ const MediaItem = (props: IMediaItem) => {
 
     const result = await response.json();
     console.log("Result", result);
+
+    if (result.success === "true") {
+    }
   }
 
   async function handleRemoveFromFavorites(item: any) {}
@@ -88,7 +93,7 @@ const MediaItem = (props: IMediaItem) => {
             }
             className="cursor-pointer border flex p-2 items-center gap-x-2 rounded-full text-sm font-semibold transition hover:opacity-90 border-white bg-black opacity-75 text-black"
           >
-            {item?.addedToFavourites ? (
+            {item?.addedToFavorites ? (
               <CheckIcon color="#ffffff" className="h-7 w-7" />
             ) : (
               <PlusIcon color="#ffffff" className="h-7 w-7" />
@@ -106,7 +111,6 @@ const MediaItem = (props: IMediaItem) => {
           >
             <ChevronDownIcon color="#ffffff" className="h-7 w-7" />
           </button>
-          p
         </div>
       </div>
     </motion.div>

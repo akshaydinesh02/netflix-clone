@@ -21,7 +21,7 @@ const ProfilesPopup = (props: IProfilesPopup) => {
   } = props;
 
   const filteredProfiles = profiles.filter(
-    (profile: any) => profile._id != loggedInProfile._id
+    (profile: any) => profile._id != loggedInProfile?._id
   );
 
   return (

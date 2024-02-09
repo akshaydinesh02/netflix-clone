@@ -49,6 +49,9 @@ interface IGlobalContext {
 
   similarMedia: Array<any>;
   setSimilarMedia: Dispatch<SetStateAction<Array<any>>>;
+
+  favorites: Array<any>;
+  setFavorites: Dispatch<SetStateAction<Array<any>>>;
 }
 
 const GlobalContext = createContext<IGlobalContext | null>(
@@ -74,6 +77,7 @@ export const GlobalContextProvider = ({
   const [showDetailsPopup, setShowDetailsPopup] = useState<boolean>(false);
   const [mediaDetails, setMediaDetails] = useState<any | null>(null);
   const [similarMedia, setSimilarMedia] = useState<Array<any>>([]);
+  const [favorites, setFavorites] = useState<Array<any>>([]);
 
   useEffect(() => {
     const currentProfile = sessionStorage.getItem("currentProfile");
@@ -100,6 +104,8 @@ export const GlobalContextProvider = ({
     setMediaDetails,
     similarMedia,
     setSimilarMedia,
+    favorites,
+    setFavorites,
   };
 
   const { data: session } = useSession();

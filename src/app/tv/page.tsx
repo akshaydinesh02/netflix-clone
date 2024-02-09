@@ -7,7 +7,7 @@ import { useGlobalContext } from "@/context";
 import { useSession } from "next-auth/react";
 import CommonLayout from "@/components/common/CommonLayout";
 import { useEffect } from "react";
-import { getMediaByGenre } from "@/utils/getMediaFunctions";
+import { getAllFavorites, getMediaByGenre } from "@/utils/getMediaFunctions";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 
 export default function Tv() {
@@ -33,6 +33,11 @@ export default function Tv() {
       const war = await getMediaByGenre("tv", 10768);
       const western = await getMediaByGenre("tv", 37);
       const drama = await getMediaByGenre("tv", 18);
+      const allFavorites = await getAllFavorites(
+        // @ts-ignore
+        session?.user?.uid,
+        loggedInProfile._id
+      );
 
       setMediaData(
         [
@@ -78,10 +83,14 @@ export default function Tv() {
           },
         ].map((item) => ({
           ...item,
-          medias: item.media.map((mediaItem: any) => ({
+          media: item.media.map((mediaItem: any) => ({
             ...mediaItem,
             type: "tv",
-            addedToFavorites: false,
+            addedToFavorites: allFavorites.length
+              ? allFavorites
+                  .map((fav: any) => fav.mediaID)
+                  .indexOf(mediaItem.id) > -1
+              : false,
           })),
         }))
       );
@@ -89,7 +98,7 @@ export default function Tv() {
       setPageLoader(false);
     }
     getMedia();
-  }, [loggedInProfile]);
+  }, [loggedInProfile, session?.user]);
 
   if (session === null) return <LoginComponent />;
   if (loggedInProfile === null) return <ManageProfiles />;

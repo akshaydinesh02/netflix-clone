@@ -47,7 +47,8 @@ const NavBar = () => {
     {
       id: "myList",
       title: "My List",
-      path: "/mylist",
+      // @ts-ignore
+      path: `/mylist/${session?.user?.uid}/${loggedInProfile?._id}`,
     },
   ];
 
@@ -158,7 +159,7 @@ const NavBar = () => {
               height={25}
               className="max-w-[30px] rounded min-w-[20px] max-h-[30px] min-h-[20px] object-cover w-[30px] h-[30px]"
             />
-            <p>{loggedInProfile.name ?? ""}</p>
+            <p>{loggedInProfile?.name ?? ""}</p>
           </div>
         </div>
       </header>

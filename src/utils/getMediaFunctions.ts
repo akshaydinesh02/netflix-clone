@@ -57,7 +57,7 @@ export const getMediaByGenre = async (type: string, genreId: number) => {
   const apiKey = process.env.TMDB_API_KEY;
   try {
     const response = await fetch(
-      `${baseUrl}/discover/${type}/?api_key=${apiKey}&language=en-US&include_adult=false&sort_by=popularity.desc&with_genres=${genreId}`,
+      `${baseUrl}/discover/${type}?api_key=${apiKey}&language=en-US&include_adult=false&sort_by=popularity.desc&with_genres=${genreId}`,
       {
         method: "GET",
       }
@@ -141,6 +141,24 @@ export const getSimilarMediaDetailsByID = async (type: string, id: number) => {
     );
     const data = await response.json();
     return data;
+  } catch (error: any) {
+    console.error("Error while getting similar media", error);
+    return null;
+  }
+};
+
+export const getAllFavorites = async (userId: string, profileId: number) => {
+  const baseUrl = process.env.TMDB_BASE_URL;
+  const apiKey = process.env.TMDB_API_KEY;
+  try {
+    const response = await fetch(
+      `/api/favorites/getAllFavorites?id=${userId}&profileID=${profileId}`,
+      {
+        method: "GET",
+      }
+    );
+    const result = await response.json();
+    return result.data;
   } catch (error: any) {
     console.error("Error while getting similar media", error);
     return null;

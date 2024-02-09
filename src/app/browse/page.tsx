@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import {
+  getAllFavorites,
   getPopularMedia,
   getTopRatedMedia,
   getTrendingMedia,
@@ -35,6 +36,11 @@ export default function Browse() {
       const trendingMovies = await getTrendingMedia("movie");
       const popularMovies = await getPopularMedia("movie");
       const topRatedMovies = await getTopRatedMedia("movie");
+      const allFavorites = await getAllFavorites(
+        // @ts-ignore
+        session?.user?.uid,
+        loggedInProfile._id
+      );
 
       setMediaData([
         ...[
@@ -55,7 +61,11 @@ export default function Browse() {
           media: item.media.map((mediaItem: any) => ({
             ...mediaItem,
             mediaType: "tv",
-            addedToFavorites: false,
+            addedToFavorites: allFavorites.length
+              ? allFavorites
+                  .map((fav: any) => fav.mediaID)
+                  .indexOf(mediaItem.id) > -1
+              : false,
           })),
         })),
         ...[
@@ -73,10 +83,14 @@ export default function Browse() {
           },
         ].map((item) => ({
           ...item,
-          medias: item.media.map((mediaItem: any) => ({
+          media: item.media.map((mediaItem: any) => ({
             ...mediaItem,
             mediaType: "movie",
-            addedToFavorites: false,
+            addedToFavorites: allFavorites.length
+              ? allFavorites
+                  .map((fav: any) => fav.mediaID)
+                  .indexOf(mediaItem.id) > -1
+              : false,
           })),
         })),
       ]);
@@ -84,7 +98,7 @@ export default function Browse() {
       setPageLoader(false);
     }
     getMedia();
-  }, []);
+  }, [loggedInProfile._id, session?.user]);
 
   if (session === null) return <LoginComponent />;
   if (loggedInProfile === null) return <ManageProfiles />;
@@ -96,9 +110,3 @@ export default function Browse() {
     </main>
   );
 }
-
-// notifications,
-// myList,
-// trailers you have watched,
-// continue watching,
-// recently watched,
