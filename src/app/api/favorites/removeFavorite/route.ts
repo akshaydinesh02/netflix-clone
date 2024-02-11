@@ -1,5 +1,5 @@
 import db from "@/database";
-import User from "@/models/userSchema";
+import Favorite from "@/models/favoriteSchema";
 import { NextResponse, NextRequest } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,7 @@ export async function DELETE(req: NextRequest) {
       });
     }
 
-    const deletedFavorite = await User.findByIdAndDelete(id);
+    const deletedFavorite = await Favorite.findByIdAndDelete(id);
     if (deletedFavorite) {
       return NextResponse.json({
         success: true,

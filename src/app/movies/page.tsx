@@ -100,7 +100,7 @@ export default function Movies() {
           media: item.media.map((mediaItem: any) => ({
             ...mediaItem,
             mediaType: "movie",
-            addedToFavorites: allFavorites.length
+            addedToFavorites: allFavorites?.length
               ? allFavorites
                   .map((fav: any) => fav.mediaID)
                   .indexOf(mediaItem.id) > -1

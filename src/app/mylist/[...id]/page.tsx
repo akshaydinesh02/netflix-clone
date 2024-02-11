@@ -44,8 +44,6 @@ const MyList = () => {
     extractFavorites();
   }, [session?.user, loggedInProfile]);
 
-  console.log("Favs", favorites);
-
   if (session === null) return <LoginComponent />;
   if (loggedInProfile === null) return <ManageProfiles />;
   if (pageLoader) return <LoadingSpinner />;

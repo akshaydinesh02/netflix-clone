@@ -10,6 +10,7 @@ import { SpeakerMute } from "@/Icons/SpeakerMute";
 import { SpeakerUnmute } from "@/Icons/SpeakerUnmute";
 import { useGlobalContext } from "@/context";
 import {
+  getAllFavorites,
   getMediaDetailsByID,
   getSimilarMediaDetailsByID,
 } from "@/utils/getMediaFunctions";
@@ -17,6 +18,7 @@ import ReactPlayer from "react-player";
 import MediaItem from "./MediaItem";
 import PlayIcon from "@/Icons/PlayIcon";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 interface IDetailsPopup {
   show: boolean;
@@ -42,6 +44,7 @@ const DetailsPopup = (props: IDetailsPopup) => {
   } = useGlobalContext();
 
   const router = useRouter();
+  const { data: session } = useSession();
 
   const [mediaKey, setMediaKey] = useState("");
 
@@ -75,11 +78,19 @@ const DetailsPopup = (props: IDetailsPopup) => {
           : "XuDwndGaCFo"
       );
 
+      const allFavorites = await getAllFavorites(
+        // @ts-ignore
+        session?.user?.uid,
+        loggedInProfile._id
+      );
+
       setSimilarMedia(
         extractedSimilarMedia?.results?.map((item: any) => ({
           ...item,
           mediaType: currentSelectedMediaInfo.type === "movie" ? "movie" : "tv",
-          addedToFavorites: false,
+          addedToFavorites: allFavorites?.length
+            ? allFavorites.map((fav: any) => fav.mediaID).indexOf(item.id) > -1
+            : false,
         }))
       );
 
@@ -172,7 +183,7 @@ const DetailsPopup = (props: IDetailsPopup) => {
                       <MediaItem
                         key={mediaItem.id}
                         item={mediaItem}
-                        similarMovieView={true}
+                        similarMediaView={true}
                       />
                     ))
                 : null}

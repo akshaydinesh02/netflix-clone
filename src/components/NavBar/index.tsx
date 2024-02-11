@@ -9,7 +9,7 @@ import Image from "next/image";
 import Search from "./Search";
 import { SearchIcon } from "@/Icons/SearchIcon";
 import { useGlobalContext } from "@/context";
-import AccountPopup from "./ProfilesPopup";
+import ProfilesPopup from "./ProfilesPopup";
 import DetailsPopup from "../common/DetailsPopup";
 
 const NavBar = () => {
@@ -169,7 +169,7 @@ const NavBar = () => {
         media={currentSelectedMediaInfo}
       />
       {showAccountPopup ? (
-        <AccountPopup
+        <ProfilesPopup
           profiles={profiles}
           setPageLoader={setPageLoader}
           signOut={signOut}

@@ -3,7 +3,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { motion } from "framer-motion";
 
-interface IAccountForm {
+interface IProfileForm {
   showNewProfileForm: boolean;
   formData: {
     name: string;
@@ -18,7 +18,7 @@ interface IAccountForm {
   handleSaveProfile: () => void;
 }
 
-const AccountForm = (props: IAccountForm) => {
+const ProfileForm = (props: IProfileForm) => {
   const { showNewProfileForm, formData, setFormData, handleSaveProfile } =
     props;
   return (
@@ -64,4 +64,4 @@ const AccountForm = (props: IAccountForm) => {
   );
 };
 
-export default AccountForm;
+export default ProfileForm;

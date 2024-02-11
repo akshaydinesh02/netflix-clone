@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../common/LoadingSpinner";
 import Image from "next/image";
 import { LockIcon } from "@/Icons/LockIcon";
-import AccountForm from "./ProfileForm";
+import ProfileForm from "./ProfileForm";
 import { TrashIcon } from "@/Icons/TrashIcon";
 import PinContainer from "./PinContainer";
 import { usePathname, useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ const ManageProfiles = () => {
   const setLoggedInProfile = useGlobalContext().setLoggedInProfile;
 
   const { data: session } = useSession();
-  const pathname = usePathname();
+  const pathName = usePathname();
   const router = useRouter();
 
   const [showNewProfileForm, setShowNewProfileForm] = useState(false);
@@ -59,6 +59,7 @@ const ManageProfiles = () => {
   }
 
   async function handleSaveProfile() {
+    console.log("form data", formData, typeof session?.user?.uid);
     try {
       const response = await fetch(`/api/profile/createProfile`, {
         method: "POST",
@@ -127,7 +128,14 @@ const ManageProfiles = () => {
           "currentProfile",
           JSON.stringify(showPinContainer.currentProfile)
         );
-        router.push(pathname);
+        if (pathName.includes("mylist")) {
+          router.push(
+            // @ts-ignore
+            `/mylist/${session?.user?.uid}/${showPinContainer.currentProfile?._id}`
+          );
+        } else {
+          router.push(pathName);
+        }
         setPageLoader(false);
       } else {
         setPinError(true);
@@ -221,7 +229,7 @@ const ManageProfiles = () => {
         setShowPinContainer={setShowPinContainer}
         handlePinSubmit={handlePinSubmit}
       />
-      <AccountForm
+      <ProfileForm
         formData={formData}
         setFormData={setFormData}
         showNewProfileForm={showNewProfileForm}

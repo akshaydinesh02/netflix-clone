@@ -39,7 +39,7 @@ export default function Browse() {
       const allFavorites = await getAllFavorites(
         // @ts-ignore
         session?.user?.uid,
-        loggedInProfile._id
+        loggedInProfile?._id
       );
 
       setMediaData([
@@ -61,7 +61,7 @@ export default function Browse() {
           media: item.media.map((mediaItem: any) => ({
             ...mediaItem,
             mediaType: "tv",
-            addedToFavorites: allFavorites.length
+            addedToFavorites: allFavorites?.length
               ? allFavorites
                   .map((fav: any) => fav.mediaID)
                   .indexOf(mediaItem.id) > -1
@@ -86,7 +86,7 @@ export default function Browse() {
           media: item.media.map((mediaItem: any) => ({
             ...mediaItem,
             mediaType: "movie",
-            addedToFavorites: allFavorites.length
+            addedToFavorites: allFavorites?.length
               ? allFavorites
                   .map((fav: any) => fav.mediaID)
                   .indexOf(mediaItem.id) > -1
@@ -98,7 +98,7 @@ export default function Browse() {
       setPageLoader(false);
     }
     getMedia();
-  }, [loggedInProfile._id, session?.user]);
+  }, [loggedInProfile?._id, session?.user]);
 
   if (session === null) return <LoginComponent />;
   if (loggedInProfile === null) return <ManageProfiles />;

@@ -14,20 +14,6 @@ const nextConfig = {
     TMDB_BASE_URL: process.env.TMDB_BASE_URL,
     TMDB_API_KEY: process.env.TMDB_API_KEY,
   },
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "fastly.picsum.photos",
-        port: "",
-      },
-      {
-        protocol: "https",
-        hostname: "image.tmdb.org",
-        port: "",
-      },
-    ],
-  },
 };
 
 module.exports = nextConfig;

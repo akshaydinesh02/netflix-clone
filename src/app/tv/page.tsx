@@ -85,8 +85,8 @@ export default function Tv() {
           ...item,
           media: item.media.map((mediaItem: any) => ({
             ...mediaItem,
-            type: "tv",
-            addedToFavorites: allFavorites.length
+            mediaType: "tv",
+            addedToFavorites: allFavorites?.length
               ? allFavorites
                   .map((fav: any) => fav.mediaID)
                   .indexOf(mediaItem.id) > -1

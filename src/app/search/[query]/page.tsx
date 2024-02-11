@@ -6,7 +6,7 @@ import ManageProfiles from "@/components/ManageProfiles";
 import { useGlobalContext } from "@/context";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { getSearchResults } from "@/utils/getMediaFunctions";
+import { getAllFavorites, getSearchResults } from "@/utils/getMediaFunctions";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import NavBar from "@/components/NavBar";
@@ -29,6 +29,11 @@ export default function Search() {
       if (params.query && typeof params.query === "string") {
         const tvShows = await getSearchResults("tv", params.query);
         const movies = await getSearchResults("movie", params.query);
+        const allFavorites = await getAllFavorites(
+          // @ts-ignore
+          session?.user?.uid,
+          loggedInProfile._id
+        );
 
         setSearchResults([
           ...tvShows
@@ -38,8 +43,11 @@ export default function Search() {
             )
             .map((item: any) => ({
               ...item,
-              type: "tv",
-              addedToFavorites: false,
+              mediaType: "tv",
+              addedToFavorites: allFavorites?.length
+                ? allFavorites.map((fav: any) => fav.mediaID).indexOf(item.id) >
+                  -1
+                : false,
             })),
 
           ...movies
@@ -49,8 +57,11 @@ export default function Search() {
             )
             .map((item: any) => ({
               ...item,
-              type: "movie",
-              addedToFavorites: false,
+              mediaType: "movie",
+              addedToFavorites: allFavorites?.length
+                ? allFavorites.map((fav: any) => fav.mediaID).indexOf(item.id) >
+                  -1
+                : false,
             })),
         ]);
 
