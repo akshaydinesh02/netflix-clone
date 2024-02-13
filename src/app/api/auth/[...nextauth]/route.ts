@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next";
 import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import { AuthOptions, Session, User as AuthUser, Account } from "next-auth";
+import { AuthOptions, User as AuthUser, Account } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { AdapterUser } from "next-auth/adapters";
 import Credentials from "next-auth/providers/credentials";
@@ -124,7 +124,16 @@ const authOptions: AuthOptions = {
       session.user.username =
         session?.user?.name?.split(" ").join("").toLocaleLowerCase() ||
         "username";
-      session.user.uid = token.sub;
+
+      try {
+        const userExists = await User.findOne({ email: session.user.email });
+        if (userExists) {
+          session.user.uid = userExists._id;
+        }
+      } catch (error: any) {
+        console.error("Error while setting uid", error);
+        session.user.uid = token.sub;
+      }
       return session;
     },
     async jwt({ token, account, profile }) {

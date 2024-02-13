@@ -2,7 +2,9 @@ import db from "@/database";
 import Profile from "@/models/profileSchema";
 import { hash } from "bcryptjs";
 import { NextResponse, NextRequest } from "next/server";
-import { ObjectId } from "bson";
+// import { ObjectId } from "bson";
+// import { ObjectId } from "mongoose";
+import mongoose from "mongoose";
 
 export const dynamic = "force-dynamic";
 
@@ -11,9 +13,6 @@ export async function POST(req: NextRequest) {
     await db();
 
     const { name, pin, uid } = await req.json();
-    console.log("Data", name, uid, pin);
-
-    const uidInObjectId = new ObjectId(uid);
 
     const allProfilesOfAccount = await Profile.find({
       userId: uid,
@@ -28,15 +27,11 @@ export async function POST(req: NextRequest) {
 
     const hashedPin = await hash(pin, 12);
 
-    console.log("Hashed pin", hashedPin);
-
     const newProfile = await Profile.create({
-      userId: uidInObjectId,
+      userId: uid,
       name,
       pin: hashedPin,
     });
-
-    console.log("New prof", newProfile);
 
     if (newProfile) {
       return NextResponse.json({

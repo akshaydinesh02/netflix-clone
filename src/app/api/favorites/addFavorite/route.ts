@@ -10,6 +10,13 @@ export async function POST(req: NextRequest) {
 
     const data = await req.json();
 
+    if (!data.uid || !data.mediaID || !data.profileID) {
+      return NextResponse.json({
+        success: false,
+        message: "UID, mediaID and profileID are mandatory",
+      });
+    }
+
     const isAlreadyFavorite = await Favorite.find({
       uid: data.uid,
       mediaID: data.mediaID,

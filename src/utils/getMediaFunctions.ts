@@ -148,6 +148,7 @@ export const getSimilarMediaDetailsByID = async (type: string, id: number) => {
 };
 
 export const getAllFavorites = async (userId: string, profileId: number) => {
+  if (!userId || !profileId) return null;
   const baseUrl = process.env.TMDB_BASE_URL;
   const apiKey = process.env.TMDB_API_KEY;
   try {
