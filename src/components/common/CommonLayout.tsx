@@ -20,7 +20,7 @@ const CommonLayout = (props: IMediaData) => {
       viewport={{ once: true }}
     >
       <Head>
-        <title>WatchFlix</title>
+        <title>OTT Clone</title>
         {/* TODO: All rest of the component data */}
       </Head>
       <>

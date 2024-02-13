@@ -65,7 +65,6 @@ const authOptions: AuthOptions = {
       user: AuthUser;
       account: Account | null;
     }) {
-      console.log("Account from callback", account, user);
       // Email
       if (account?.provider === "credentials") {
         return true;

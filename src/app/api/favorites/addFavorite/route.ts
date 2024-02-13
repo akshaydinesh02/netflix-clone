@@ -23,8 +23,6 @@ export async function POST(req: NextRequest) {
       profileID: data.profileID,
     }).exec();
 
-    console.log("isAlreadyFavorite", isAlreadyFavorite);
-
     if (isAlreadyFavorite && isAlreadyFavorite.length > 0) {
       return NextResponse.json({
         success: false,

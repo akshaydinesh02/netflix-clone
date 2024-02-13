@@ -1,7 +1,7 @@
 "use client";
-import { useSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { PlusIcon } from "@/Icons/PlusIcon";
 import Image from "next/image";
@@ -59,26 +59,17 @@ function LoginBanner({ router }: any) {
 
   const handleSignIn = async () => {
     if (!isValidEmail(email)) {
-      console.log("Email is invalid");
       setError("Email is invalid");
       return;
     }
-
-    // if (!password || password.length < 8) {
-    //   console.log("Password is invalid");
-    //   setError("Password is invalid");
-    //   return;
-    // }
 
     const res = await signIn("credentials", {
       redirect: false,
       email,
       password,
     });
-    console.log("Res", res);
 
     if (res?.error) {
-      console.log("Invalid email or password");
       setError("Invalid email or password");
       if (res?.url) router.replace("/");
     } else {

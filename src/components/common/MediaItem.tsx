@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import mongoose from "mongoose";
 import { getAllFavorites } from "@/utils/getMediaFunctions";
 
 const baseUrl = "https://image.tmdb.org/t/p/w500";
@@ -52,8 +51,6 @@ const MediaItem = (props: IMediaItem) => {
       session?.user?.uid,
       loggedInProfile?._id
     );
-
-    console.log("Res from update function", result);
 
     if (result) {
       setFavorites(
@@ -136,7 +133,6 @@ const MediaItem = (props: IMediaItem) => {
   }
 
   async function handleRemoveFromFavorites(item: any) {
-    console.log("running remove function", item);
     const response = await fetch(
       `/api/favorites/removeFavorite?id=${item._id}`,
       {

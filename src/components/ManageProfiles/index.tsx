@@ -59,7 +59,6 @@ const ManageProfiles = () => {
   }
 
   async function handleSaveProfile() {
-    console.log("form data", formData, session?.user);
     try {
       const response = await fetch(`/api/profile/createProfile`, {
         method: "POST",
@@ -72,7 +71,6 @@ const ManageProfiles = () => {
           uid: `${session?.user?.uid}`,
         }),
       });
-      console.log("Response -- save profile", await response.json());
     } catch (error: any) {
       console.error("Error while saving profile", error);
     } finally {
@@ -93,7 +91,6 @@ const ManageProfiles = () => {
           method: "DELETE",
         }
       );
-      console.log("Response -- delete profile", await response.json());
     } catch (error: any) {
       console.error("Error while deleting profile", error);
     } finally {
@@ -143,8 +140,6 @@ const ManageProfiles = () => {
         setLoggedInProfile(null);
         sessionStorage.removeItem("currentProfile");
       }
-
-      console.log("Response -- validate profile pin", result);
     } catch (error: any) {
       console.error("Error while validating user profile PIN", error);
     } finally {

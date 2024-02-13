@@ -4,9 +4,7 @@ import CommonLayout from "@/components/common/CommonLayout";
 import LoginComponent from "@/components/common/LoginComponent";
 import ManageProfiles from "@/components/ManageProfiles";
 import { useGlobalContext } from "@/context";
-import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { useEffect } from "react";
 import {
   getAllFavorites,

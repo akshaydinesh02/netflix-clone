@@ -6,7 +6,6 @@ import React, { Dispatch, SetStateAction } from "react";
 
 interface ISearch {
   pathName: string;
-  // router={router}
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   setPageLoader: Dispatch<SetStateAction<boolean>>;
@@ -22,7 +21,6 @@ const Search = (props: ISearch) => {
     setShowSearchBar,
   } = props;
 
-  const params = useParams();
   const router = useRouter();
 
   function handleSubmit(e: any) {

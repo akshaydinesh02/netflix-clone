@@ -1,6 +1,5 @@
 "use client";
 
-import AuthHOC from "@/components/HOC/AuthHOC";
 import LoginComponent from "@/components/common/LoginComponent";
 import ManageProfiles from "@/components/ManageProfiles";
 import { useGlobalContext } from "@/context";

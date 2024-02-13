@@ -4,10 +4,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import MuiModal from "@mui/material/Modal";
 import { CloseIcon } from "@/Icons/CloseIcon";
-import { PlusIcon } from "@/Icons/PlusIcon";
-import { ThumbsUpIcon } from "@/Icons/ThumbsUpIcon";
-import { SpeakerMute } from "@/Icons/SpeakerMute";
-import { SpeakerUnmute } from "@/Icons/SpeakerUnmute";
 import { useGlobalContext } from "@/context";
 import {
   getAllFavorites,
